@@ -1,0 +1,63 @@
+Описание файлов проекта:
+"main.c" - файл с главной функцией проекта "main()";
+
+"fibonacci.h" - заголовочный файл с объявлением функции "fibonacci(...)"
+"fibonacci.c" - файл реализации функции "fibonacci(...)"
+"libFibonacci.so" - динамически подключаемая библиотека,содержащая реализацию функции "fibonacci(...)" (для Linux)
+"libFibonacci.dll" - динамически подключаемая библиотека,содержащая реализацию функции "fibonacci(...)" (для Windows)
+
+"input_data.h" - заголовочный файл с объявлением функций "input_number_elements(...)" и "input_number_threads(...)" 
+
+"input_data.c" - файл реализации функций "input_number_elements(...)" и "input_number_threads(...)" 
+
+"write_file.h" - заголовочный файл с объявлением функции "write_file(...)"
+"write_file.c" - файл реализации функции "write_file(...)"
+
+"thread_func.h" - заголовочный файл с объявлением функции "thread_func(...)"
+"thread_func.c" - файл реализации функции "thread_func(...)"
+
+"threads.h" - заголовочный файл с объявлением функции "threads(...)"
+"threads.c" - файл реализации функции "threads(...)"
+
+"print_work.h" - заголовочный файл с объявлением фунции "print_work(...)"
+"print_work.c" - файл реализации функции "print_work(...)"
+
+"fib.bin" - бинарный файл, создаваемый функцией "write_file(...)", содержащий числа последовательности Фибоначчи, и из которого производится чтение и последующие вычисления суммы чисел функцией "thread_func(...)".
+
+"libwinpthread-1.dll" - сторонняя библиотека, необходимая для нормальной работы приложения
+
+"fibonacci.exe" - исполняемый файл приложения (для Windows)
+"fibonacci" - исполняемый файл приложения (для Linux)
+-------------------------------------------------------------------------------
+
+Сборка проекта и запуск приложения (в среде ОС Linux (для Linux), компилятор gcc):
+        gcc -c -o input input_data.c
+        gcc -c -o write write_file.c
+        gcc -c -o thread thread_func.c       
+        gcc -c -o threads threads.c  
+        gcc -c -o print print_work.c
+        gcc -o libFibonacci.so -shared -fPIC fibonacci.c
+        export LD_LIBRARY_PATH=.
+        gcc input write thread threads print main.c -L. -lFibonacci -fPIC -o fibonacci
+        ./fibonacci
+-------------------------------------------------------------------------------
+
+Сборка проекта (в среде ОС Linux (для Windows), компилятор mingw):
+        i686-w64-mingw32-gcc -c -o input.o input_data.c
+        i686-w64-mingw32-gcc -c -o write.o write_file.c
+        i686-w64-mingw32-gcc -c -o thread.o thread_func.c       
+        i686-w64-mingw32-gcc -c -o threads.o threads.c  
+        i686-w64-mingw32-gcc -c -o print.o print_work.c
+        i686-w64-mingw32-gcc -o libFibonacci.dll -shared -fPIC fibonacci.c
+        i686-w64-mingw32-gcc input.o write.o thread.o threads.o print.o main.c -L. -I. libFibonacci.dll -pthread -fPIC -o fibonacci.exe
+        wine fibonacci.exe
+-------------------------------------------------------------------------------
+
+ВНИМАНИЕ!!!
+При запуске программы "fibonacci.exe" может возникнуть системная ошибка Windows: "Не удается продолжить выполнение кода, поскольку система не обнаружила libwinpthread-1.dll. Для устранения этой проблемы попробуйте переустановить программу".
+(смотри файл "Error_Windows.jpg")
+
+Для устранения этой ошибки нужно:
+1) скопировать файл "libwinpthread-1.dll" в директорию установки программы;
+2) или поместить файл "libwinpthread-1.dll" в директорию вашей системы (C:\Windows\System32 (для 32 битных систем) или в директорию C:\Window\SysWOW64);
+3) перезагрузите компьютер. 

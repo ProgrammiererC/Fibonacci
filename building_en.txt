@@ -1,0 +1,63 @@
+Description of the project files:
+
+"main.c" is a file with the main function of the project "main()";
+
+"fibonacci.h" - header file with function declaration "fibonacci(...)"
+"fibonacci.c" - function implementation file "fibonacci(...)"
+"libFibonacci.so " - a dynamically connected library containing the implementation of the function "fibonacci(...)" (for Linux)
+"libFibonacci.dll " - dynamically plug-in library containing the implementation of the "fibonacci(...)" function (for Windows)
+
+"input_data.h" - header file with function declaration "input_number_elements(...)" and "input_number_threads(...)"
+
+"input_data.c" - function implementation file "input_number_elements(...)" and "input_number_threads(...)"
+
+"write_file.h" - header file with function declaration "write_file(...)"
+"write_file.c" - function implementation file "write_file(...)"
+
+"thread_func.h" - header file with function declaration "thread_func(...)"
+"thread_func.c" - function implementation file "thread_func(...)"
+"threads.h" is the header file with the declaration of the function "threads(...)"
+"threads.c" is the file of the implementation of the function "threads(...)"
+
+""print_work.h" - header file with function declaration "print_work(...)"
+"print_work.c" - function implementation file "print_work(...)"
+
+"fib.bin" is a binary file created by the function "write_file(...)", containing the numbers of the Fibonacci sequence, and from which the reading and subsequent calculations of the sum of the numbers are performed by the function "thread_func(...)".
+
+"libwinpthread-1.dll " - a third-party library necessary for the normal operation of the application
+
+"fibonacci.exe " - application executable (for Windows)
+"fibonacci" - application executable (for Linux)
+-------------------------------------------------------------------------------
+
+Building a project and launching an application (in a Linux OS environment (for Linux), gcc compiler):
+        gcc -c -o input input_data.c
+        gcc -c -o write write_file.c
+        gcc -c -o thread thread_func.c
+        gcc -c -o threads threads.c
+        gcc -c -o print print_work.c
+        gcc -o libFibonacci.so -shared -fPIC fibonacci.c
+        export LD_LIBRARY_PATH=.
+        gcc input write thread threads print main.c -L. -lFibonacci -fPIC -o fibonacci
+        ./fibonacci
+-------------------------------------------------------------------------------
+
+Project build (in Linux OS environment (for Windows), mingw compiler):
+        i686-w64-mingw32-gcc -c -o input.o input_data.c
+        i686-w64-mingw32-gcc -c -o write.o write_file.c
+        i686-w64-mingw32-gcc -c -o thread.o thread_func.c
+        i686-w64-mingw32-gcc -c -o threads.o threads.c
+        i686-w64-mingw32-gcc -c -o print.o print_work.c
+        i686-w64-mingw32-gcc -o libFibonacci.dll -shared -fPIC fibonacci.c
+        i686-w64-mingw32-gcc input.o write.o thread.o threads.o print.o main.c -L. -I. libFibonacci.dll -pthread -fPIC -o fibonacci.exe
+        wine fibonacci.exe
+-------------------------------------------------------------------------------
+
+ATTENTION!!!
+When running the "fibonacci.exe" program, a Windows system error may occur: "Code execution cannot continue because the system did not detect libwinpthread-1.dll. To fix this problem, try reinstalling the program".
+(see file "Error_Windows.jpg").
+
+To resolve this error you need to:
+1) copy the file "libwinpthread-1.dll" to the program installation directory;
+2) or place the file "libwinpthread-1.dll" in the directory of your system (C:\Windows\System32 (for 32 bit systems) or in the directory C:\Window\SysWOW64);
+3) restart your computer.
